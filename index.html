@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ელენეს ბაღი</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@400;500;600&family=Noto+Serif+Georgian:wght@400;600;700&display=swap">
+<style>
+/* Layout: one soft column (max 560px), five tabs pinned to the bottom, dusk-rose palette with sage, butter and lavender accents */
+:root{
+  --bg:#FBF4F6; --surface:#FFFFFF; --ink:#43304A; --muted:#85708C; --line:#EADCE5;
+  --rose:#D85F8B; --rose-soft:#F8DCE7;
+  --sage:#6FA784; --sage-soft:#DFF0E5;
+  --butter:#E9BE5A; --butter-soft:#FBF0CF;
+  --lav:#8F7BD1; --lav-soft:#E8E1F8;
+  --paper:#FFFDF9; --petal:#FFFFFF; --petal-edge:#E4CEDB; --stem:#6BA57C;
+  --shadow:0 6px 24px rgba(120,70,110,.12);
+  --serif:'Noto Serif Georgian',Georgia,'Sylfaen',serif;
+  --sans:'Noto Sans Georgian','Sylfaen',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1F1728; --surface:#2B2137; --ink:#F5EAF1; --muted:#B7A2BF; --line:#41334F;
+    --rose:#F08DB0; --rose-soft:#4B2F46;
+    --sage:#8FC8A2; --sage-soft:#2D4236;
+    --butter:#F2D388; --butter-soft:#4A402B;
+    --lav:#B7A6EE; --lav-soft:#3B3257;
+    --paper:#33283F; --petal:#F8EEF4; --petal-edge:#CDB4C8; --stem:#7DBB8E;
+    --shadow:0 6px 24px rgba(0,0,0,.35);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1F1728; --surface:#2B2137; --ink:#F5EAF1; --muted:#B7A2BF; --line:#41334F;
+  --rose:#F08DB0; --rose-soft:#4B2F46;
+  --sage:#8FC8A2; --sage-soft:#2D4236;
+  --butter:#F2D388; --butter-soft:#4A402B;
+  --lav:#B7A6EE; --lav-soft:#3B3257;
+  --paper:#33283F; --petal:#F8EEF4; --petal-edge:#CDB4C8; --stem:#7DBB8E;
+  --shadow:0 6px 24px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:18px 120px;
+}
+h1,h2,h3{font-family:var(--serif); line-height:1.3; margin:0; text-wrap:balance}
+p{margin:0}
+button{font:inherit; color:inherit; cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--lav); outline-offset:2px}
+.app{max-width:560px; margin:0 auto; min-width:0}
+
+/* header */
+.top{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
+.brand{font-family:var(--serif); font-weight:700; font-size:1.15rem; letter-spacing:.01em}
+.music{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; border:1.5px solid var(--line); background:var(--surface); font-size:.9rem; font-weight:500}
+.music svg{width:18px; height:18px}
+.music[aria-pressed="true"]{background:var(--lav-soft); border-color:var(--lav); color:var(--ink)}
+.music[aria-pressed="true"] svg{animation:bob 1.2s ease-in-out infinite alternate}
+
+/* views */
+.view{display:flex; flex-direction:column; gap:20px}
+.view[hidden]{display:none}
+.lead{color:var(--muted); font-size:.95rem}
+.h-sec{font-size:1.35rem}
+
+/* home */
+.hero{background:var(--rose-soft); border-radius:28px; padding:24px 22px; position:relative; overflow:hidden; display:flex; flex-direction:column; gap:10px; min-height:190px}
+.hero h1{font-size:1.65rem; max-width:75%}
+.hero p{max-width:82%; font-size:.98rem}
+.hero svg{position:absolute; right:-6px; bottom:-4px; width:150px; height:130px}
+.tiles{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px}
+.tile{display:flex; flex-direction:column; align-items:flex-start; gap:10px; text-align:left; padding:16px; border-radius:22px; border:1.5px solid var(--line); background:var(--surface); box-shadow:var(--shadow); min-width:0}
+.tile .ic{width:44px; height:44px; border-radius:14px; display:grid; place-items:center}
+.tile .ic svg{width:24px; height:24px}
+.tile b{font-family:var(--serif); font-size:1.05rem}
+.tile small{color:var(--muted); font-size:.85rem; line-height:1.4}
+.ic.rose{background:var(--rose-soft); color:var(--rose)}
+.ic.lav{background:var(--lav-soft); color:var(--lav)}
+.ic.sage{background:var(--sage-soft); color:var(--sage)}
+.ic.butter{background:var(--butter-soft); color:var(--butter)}
+.tile:active{transform:scale(.98)}
+.daily{background:var(--surface); border:1.5px solid var(--line); border-radius:24px; padding:20px; display:flex; flex-direction:column; gap:12px}
+.daily ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+.check{display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:12px 14px; border-radius:16px; border:1.5px solid var(--line); background:var(--bg)}
+.check .box{flex:none; width:26px; height:26px; border-radius:9px; border:2px solid var(--lav); display:grid; place-items:center; color:transparent}
+.check[aria-checked="true"]{background:var(--sage-soft); border-color:var(--sage)}
+.check[aria-checked="true"] .box{background:var(--sage); border-color:var(--sage); color:var(--surface)}
+.check[aria-checked="true"] span:last-child{text-decoration:line-through; text-decoration-color:var(--sage)}
+.daily .note{font-size:.88rem; color:var(--muted)}
+
+/* letters */
+.letters{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px}
+.lrow{display:flex; align-items:center; gap:14px; width:100%; text-align:left; padding:14px 16px; border-radius:20px; border:1.5px solid var(--line); background:var(--surface)}
+.seal{flex:none; width:42px; height:42px; border-radius:50%; background:var(--rose-soft); color:var(--rose); display:grid; place-items:center}
+.seal svg{width:22px; height:22px}
+.lrow.read .seal{background:var(--sage-soft); color:var(--sage)}
+.lrow .t{flex:1; min-width:0; font-family:var(--serif); font-weight:600; line-height:1.35}
+.lrow .s{font-size:.78rem; color:var(--muted); font-family:var(--sans); font-weight:400; display:block}
+.sheet{position:fixed; inset:0; z-index:50; background:rgba(40,20,45,.55); display:flex; align-items:flex-end; justify-content:center;
+  padding-left:max(0px,env(safe-area-inset-left,0px)); padding-right:max(0px,env(safe-area-inset-right,0px))}
+.sheet[hidden]{display:none}
+.panel{position:relative; width:100%; max-width:560px; max-height:92%; overflow:auto; background:var(--paper); border-radius:28px 28px 0 0; padding:30px 26px calc(26px + env(safe-area-inset-bottom,0px)); display:flex; flex-direction:column; gap:16px; animation:rise .35s ease-out}
+.panel .eyebrow{font-size:.78rem; letter-spacing:.12em; color:var(--rose); font-weight:600}
+.panel h2{font-size:1.5rem; padding-right:40px}
+.letter-body{display:flex; flex-direction:column; gap:14px; font-family:var(--serif); font-size:1.05rem; line-height:1.85}
+.sign{font-family:var(--serif); font-weight:600; color:var(--rose); margin-top:4px}
+.x{position:absolute; top:16px; right:16px; width:40px; height:40px; border-radius:50%; border:1.5px solid var(--line); background:var(--surface); font-size:1.3rem; line-height:1}
+.sheet-nav{display:flex; gap:10px; margin-top:6px}
+.btn{padding:12px 18px; border-radius:999px; border:1.5px solid var(--line); background:var(--surface); font-weight:500; display:inline-flex; align-items:center; justify-content:center; gap:8px}
+.btn.primary{background:var(--rose); border-color:var(--rose); color:#fff}
+:root[data-theme="dark"] .btn.primary{color:#2B1424}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn.primary{color:#2B1424}}
+.btn[disabled]{opacity:.4; cursor:default}
+.sheet-nav .btn{flex:1}
+
+/* bouquet */
+.stage-card{background:var(--surface); border:1.5px solid var(--line); border-radius:28px; padding:14px 10px 18px; box-shadow:var(--shadow); display:flex; flex-direction:column; align-items:center; gap:12px}
+#bouquet{width:100%; max-width:380px; height:auto; display:block; touch-action:manipulation}
+.sway{transform-origin:180px 300px; animation:sway 5.5s ease-in-out infinite alternate}
+.head{cursor:pointer}
+.pop{animation:pop .4s ease-out}
+.row-btns{display:flex; flex-wrap:wrap; gap:10px; justify-content:center}
+
+/* cat */
+.cat-card{background:var(--surface); border:1.5px solid var(--line); border-radius:28px; padding:16px 16px 20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:14px}
+.fur-gray{--fur:#B7B0C6; --fur2:#8F88A3; --furl:#E3DEEC; --fur-line:#8C85A0; --ear:#F0A9BF}
+.fur-ginger{--fur:#F0AA6F; --fur2:#D48443; --furl:#FBE0C4; --fur-line:#C77B3C; --ear:#F7B3C4}
+.fur-white{--fur:#F6F1F0; --fur2:#DDD1CF; --furl:#FFFFFF; --fur-line:#CFC2C0; --ear:#F5B6C6}
+.fur-black{--fur:#4B4457; --fur2:#2F2A38; --furl:#645C72; --fur-line:#2A2433; --ear:#B86A8C}
+.cat-name{display:flex; align-items:center; gap:10px}
+.cat-name input{flex:1; min-width:0; font:inherit; font-family:var(--serif); font-weight:700; font-size:1.3rem; color:var(--ink); background:transparent; border:none; border-bottom:2px dashed var(--line); padding:4px 2px}
+.swatches{display:flex; gap:8px}
+.sw{width:28px; height:28px; border-radius:50%; border:3px solid var(--surface); box-shadow:0 0 0 1.5px var(--line)}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--lav)}
+.bubble{align-self:center; max-width:92%; background:var(--lav-soft); color:var(--ink); padding:10px 16px; border-radius:18px; font-size:.95rem; text-align:center; position:relative; min-height:44px; display:grid; place-items:center}
+.bubble::after{content:""; position:absolute; bottom:-8px; left:50%; margin-left:-8px; border:8px solid transparent; border-bottom:0; border-top-color:var(--lav-soft)}
+.cat-stage{position:relative; width:100%; max-width:340px; margin:6px auto 0}
+#cat{width:100%; height:auto; display:block; cursor:pointer; -webkit-tap-highlight-color:transparent}
+.tail{transform-origin:212px 226px; animation:wag 2.6s ease-in-out infinite alternate}
+.eyes{transform-origin:150px 120px; animation:blink 5s infinite}
+.eyes-happy,.eyes-sleep{display:none}
+#cat.happy .eyes,#cat.sleeping .eyes{display:none}
+#cat.happy .eyes-happy{display:inline}
+#cat.sleeping .eyes-sleep{display:inline}
+.head-g{transform-origin:150px 180px}
+#cat.bounce .head-g{animation:nod .5s ease-in-out 2}
+#cat.playing .head-g{animation:tilt .9s ease-in-out infinite alternate}
+#cat.sleeping .head-g{transform:rotate(4deg)}
+#cat.sleeping .tail{animation-duration:6s}
+.yarn{display:none}
+#cat.playing .yarn{display:inline; animation:roll 3.2s ease-in-out infinite}
+.yarn-spin{transform-origin:0 0; animation:spin 3.2s linear infinite}
+.float{position:absolute; pointer-events:none; animation:floatUp 1.6s ease-out forwards; color:var(--rose)}
+.float svg{width:22px; height:22px; display:block}
+.float.z{color:var(--lav); font-family:var(--serif); font-weight:700; font-size:1.3rem}
+.meters{display:flex; flex-direction:column; gap:10px}
+.meter{display:grid; grid-template-columns:130px 1fr; align-items:center; gap:12px; font-size:.88rem}
+.bar{height:12px; border-radius:99px; background:var(--bg); border:1.5px solid var(--line); overflow:hidden}
+.bar i{display:block; height:100%; border-radius:99px; transition:width .5s ease}
+.bar.f i{background:var(--butter)}
+.bar.p i{background:var(--rose)}
+.bar.r i{background:var(--lav)}
+.cat-actions{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+.act{display:flex; flex-direction:column; align-items:center; gap:6px; padding:12px 6px; border-radius:18px; border:1.5px solid var(--line); background:var(--bg); font-weight:500; font-size:.92rem}
+.act svg{width:26px; height:26px}
+.act:active{transform:scale(.97)}
+
+/* game */
+.game-bar{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.moves{font-variant-numeric:tabular-nums; color:var(--muted); font-size:.95rem; font-weight:500}
+.gwrap{position:relative}
+#gcanvas{width:100%; aspect-ratio:16/9; display:block; border-radius:22px; border:1.5px solid var(--line); touch-action:manipulation; background:var(--lav-soft); cursor:pointer}
+.gmsg{position:absolute; inset:0; border-radius:22px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:16px; text-align:center; pointer-events:none; background:color-mix(in srgb,var(--surface) 78%,transparent)}
+.gmsg[hidden]{display:none}
+.gmsg b{font-family:var(--serif); font-size:1.3rem}
+.gmsg p{font-size:.95rem; max-width:30ch}
+.jump{width:100%; padding:16px; font-size:1.1rem}
+
+/* bottom nav */
+.nav{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--surface); border-top:1.5px solid var(--line);
+  padding:8px max(10px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+.nav-in{max-width:560px; margin:0 auto; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px}
+.nav button{display:flex; flex-direction:column; align-items:center; gap:2px; padding:6px 2px; border:none; background:none; border-radius:14px; font-size:.7rem; color:var(--muted); font-weight:500}
+.nav button svg{width:24px; height:24px}
+.nav button[aria-current="page"]{color:var(--rose); background:var(--rose-soft)}
+
+@keyframes sway{from{transform:rotate(-1.4deg)}to{transform:rotate(1.4deg)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes wag{from{transform:rotate(-5deg)}to{transform:rotate(7deg)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@keyframes nod{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes tilt{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+@keyframes roll{0%,100%{transform:translateX(70px)}50%{transform:translateX(230px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes floatUp{0%{opacity:0; transform:translateY(0) scale(.7)}15%{opacity:1}100%{opacity:0; transform:translateY(-90px) scale(1.15)}}
+@keyframes rise{from{transform:translateY(40px); opacity:0}to{transform:none; opacity:1}}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important}
+}
+@media (max-width:380px){
+  .hero h1{font-size:1.4rem}
+  .meter{grid-template-columns:104px 1fr}
+}
+</style>
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+</head>
+<body>
+
+
+<!-- shared drawings: flowers and a cat face used by the bouquet, the hero and the memory game -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs id="defs"></defs></svg>
+
+<audio id="song" src="music.mp3" loop preload="none"></audio>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">ელენეს ბაღი</div>
+    <button class="music" id="musicBtn" aria-pressed="false" aria-label="მუსიკის ჩართვა">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+      <span id="musicLbl">მუსიკა</span>
+    </button>
+  </header>
+
+  <!-- HOME -->
+  <main class="view" id="v-home">
+    <section class="hero">
+      <h1 id="greet">გამარჯობა, ელენე</h1>
+      <p>ეს საიტი მხოლოდ შენთვისაა. აქ არაფერი გმართებს, არც სწრაფად, არც კარგად. შემოდი, ჩაისუნთქე და თუ გინდა, წაიკითხე რამე.</p>
+      <svg viewBox="0 0 150 130" aria-hidden="true">
+        <path d="M30 130 Q36 90 40 62" stroke="var(--stem)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M78 130 Q76 80 82 40" stroke="var(--stem)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M122 130 Q118 100 112 76" stroke="var(--stem)" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <use href="#f-blossom" transform="translate(40,58) scale(.8)"/>
+        <use href="#f-sunflower" transform="translate(82,36) scale(.85)"/>
+        <use href="#f-daisy" transform="translate(112,72) scale(.7)"/>
+      </svg>
+    </section>
+
+    <div class="tiles" id="tiles"></div>
+
+    <section class="daily">
+      <h2 class="h-sec">დღევანდელი პატარა რამეები</h2>
+      <ul id="daily"></ul>
+      <p class="note" id="dailyNote">თუ დღეს არც ერთს ვერ აკეთებ, ესეც რიგზეა. ხვალ ახალი დღეა.</p>
+    </section>
+  </main>
+
+  <!-- LETTERS -->
+  <section class="view" id="v-letters" hidden>
+    <div>
+      <h2 class="h-sec">წერილები</h2>
+      <p class="lead">თითო წერილი კარგი განწყობისთვის. გახსენი ნებისმიერი.</p>
+    </div>
+    <ul class="letters" id="letters"></ul>
+  </section>
+
+  <!-- BOUQUET -->
+  <section class="view" id="v-bouquet" hidden>
+    <div>
+      <h2 class="h-sec">შენი თაიგული</h2>
+      <p class="lead">შეეხე ყვავილს და ის შეიცვლება. ააწყვე ისეთი, როგორიც დღეს მოგეწონება.</p>
+    </div>
+    <div class="stage-card">
+      <svg id="bouquet" viewBox="0 0 360 420" role="img" aria-label="ყვავილების თაიგული"></svg>
+      <div class="row-btns">
+        <button class="btn primary" id="shuffle">ახალი თაიგული</button>
+        <button class="btn" id="resetB">პირველი თაიგული</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAT -->
+  <section class="view" id="v-cat" hidden>
+    <div class="cat-card fur-gray" id="catCard">
+      <div class="cat-name">
+        <input id="catName" maxlength="14" value="ფუსუნა" aria-label="კატის სახელი" autocomplete="off">
+        <div class="swatches" id="swatches" role="group" aria-label="ბეწვის ფერი"></div>
+      </div>
+      <div class="bubble" id="bubble" aria-live="polite">გამარჯობა, ელენე, მე აქ ვარ</div>
+      <div class="cat-stage" id="catStage">
+        <svg id="cat" viewBox="0 0 300 290" role="img" aria-label="კატა. შეეხე, რომ მოეფერო">
+          <ellipse cx="150" cy="276" rx="96" ry="9" fill="var(--ink)" opacity=".08"/>
+          <g class="tail"><path d="M212 236 C264 236 280 182 254 156 C247 149 238 157 245 165 C260 186 246 214 208 216Z" fill="var(--fur)" stroke="var(--fur-line)" stroke-width="2" stroke-linejoin="round"/></g>
+          <ellipse cx="150" cy="214" rx="74" ry="58" fill="var(--fur)" stroke="var(--fur-line)" stroke-width="2"/>
+          <ellipse cx="150" cy="228" rx="40" ry="34" fill="var(--furl)"/>
+          <ellipse cx="114" cy="264" rx="23" ry="12" fill="var(--furl)" stroke="var(--fur-line)" stroke-width="2"/>
+          <ellipse cx="186" cy="264" rx="23" ry="12" fill="var(--furl)" stroke="var(--fur-line)" stroke-width="2"/>
+          <g class="head-g">
+            <path d="M92 94 L97 36 L141 68Z" fill="var(--fur)" stroke="var(--fur-line)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M208 94 L203 36 L159 68Z" fill="var(--fur)" stroke="var(--fur-line)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M104 80 L106 53 L126 68Z" fill="var(--ear)"/>
+            <path d="M196 80 L194 53 L174 68Z" fill="var(--ear)"/>
+            <circle cx="150" cy="122" r="63" fill="var(--fur)" stroke="var(--fur-line)" stroke-width="2"/>
+            <path d="M150 62 v16 M134 66 l3 13 M166 66 l-3 13" stroke="var(--fur2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="108" cy="142" rx="13" ry="8" fill="var(--ear)" opacity=".55"/>
+            <ellipse cx="192" cy="142" rx="13" ry="8" fill="var(--ear)" opacity=".55"/>
+            <g class="eyes">
+              <ellipse cx="124" cy="120" rx="7" ry="9.5" fill="#2B2230"/>
+              <ellipse cx="176" cy="120" rx="7" ry="9.5" fill="#2B2230"/>
+              <circle cx="127" cy="116" r="2.8" fill="#fff"/>
+              <circle cx="179" cy="116" r="2.8" fill="#fff"/>
+            </g>
+            <path class="eyes-happy" d="M114 123 q10 -12 20 0 M166 123 q10 -12 20 0" stroke="#2B2230" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path class="eyes-sleep" d="M114 119 q10 9 20 0 M166 119 q10 9 20 0" stroke="#2B2230" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M143 136 h14 l-7 8z" fill="var(--rose)"/>
+            <path d="M150 144 q-6 9 -15 4 M150 144 q6 9 15 4" stroke="#2B2230" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M98 138 l-32 -6 M98 147 l-34 4 M202 138 l32 -6 M202 147 l34 4" stroke="var(--ink)" stroke-width="2" opacity=".45" stroke-linecap="round"/>
+          </g>
+          <g class="yarn" transform="translate(0,260)">
+            <g class="yarn-spin">
+              <circle r="15" fill="var(--rose)"/>
+              <path d="M-13 -5 Q0 -12 13 -5 M-15 2 Q0 -6 15 2 M-12 9 Q0 3 12 9" stroke="#fff" stroke-opacity=".6" stroke-width="2" fill="none"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="meters">
+        <div class="meter"><span>მაძღარია</span><div class="bar f"><i id="m-fed"></i></div></div>
+        <div class="meter"><span>მხიარულია</span><div class="bar p"><i id="m-fun"></i></div></div>
+        <div class="meter"><span>დასვენებულია</span><div class="bar r"><i id="m-rest"></i></div></div>
+      </div>
+      <div class="cat-actions">
+        <button class="act" id="aFeed">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c3-5 9-6 13-2l5-3v10l-5-3c-4 4-10 3-13-2z"/><circle cx="8" cy="11" r=".8" fill="currentColor"/></svg>
+          აჭამე
+        </button>
+        <button class="act" id="aPlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M5 9c5 2 9 0 14 2M5 14c5-2 9 0 13 3M9 4.5c0 5 3 9 7 14"/></svg>
+          ითამაშე
+        </button>
+        <button class="act" id="aSleep">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></svg>
+          <span id="sleepLbl">დააძინე</span>
+        </button>
+      </div>
+      <p class="lead" style="text-align:center">შეეხე კატას, რომ მოეფერო. აქ არაფერი ფუჭდება და კატა არასდროს ნაწყენდება. ის უბრალოდ შენთან არის.</p>
+    </div>
+  </section>
+
+  <!-- GAME -->
+  <section class="view" id="v-game" hidden>
+    <div>
+      <h2 class="h-sec">ფისოს სირბილი</h2>
+      <p class="lead">შეეხე ეკრანს, რომ ფისომ დაბრკოლებებს გადაახტეს. ჰაერში მეორე შეხებაც შეიძლება. შეაგროვე გულები.</p>
+    </div>
+    <div class="game-bar">
+      <span class="moves" id="gScore">ქულა: 0</span>
+      <span class="moves" id="gBest">რეკორდი: 0</span>
+    </div>
+    <div class="gwrap">
+      <canvas id="gcanvas" role="img" aria-label="თამაში: ფისო დარბის და დაბრკოლებებზე ხტება"></canvas>
+      <div class="gmsg" id="gmsg"><b id="gmT"></b><p id="gmP"></p></div>
+    </div>
+    <button class="btn primary jump" id="gJumpBtn" type="button">ხტუნვა</button>
+  </section>
+</div>
+
+<!-- letter reader -->
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="panel" id="panel">
+    <button class="x" id="sheetClose" aria-label="დახურვა">×</button>
+    <p class="eyebrow">ელენესთვის</p>
+    <h2 id="sheetTitle"></h2>
+    <div class="letter-body" id="sheetBody"></div>
+    <div class="sheet-nav">
+      <button class="btn" id="prevL">წინა</button>
+      <button class="btn" id="nextL">შემდეგი</button>
+    </div>
+  </div>
+</div>
+
+<nav class="nav" aria-label="მთავარი ნავიგაცია">
+  <div class="nav-in" id="nav"></div>
+</nav>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var NS='http://www.w3.org/2000/svg';
+  var store={
+    get:function(k,d){try{var v=localStorage.getItem('elene.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+    set:function(k,v){try{localStorage.setItem('elene.'+k,JSON.stringify(v))}catch(e){}}
+  };
+  function pick(a){return a[Math.floor(Math.random()*a.length)]}
+  function el(tag,attrs,parent){var n=document.createElementNS(NS,tag);for(var k in attrs){n.setAttribute(k,attrs[k])}if(parent)parent.appendChild(n);return n}
+
+  /* ---------- flower drawings ---------- */
+  function petals(n,build){var s='';for(var i=0;i<n;i++){s+='<g transform="rotate('+(360/n*i)+')">'+build(i)+'</g>'}return s}
+  var flowers={
+    daisy:petals(10,function(){return '<ellipse cx="0" cy="-19" rx="7.5" ry="15" fill="var(--petal)" stroke="var(--petal-edge)" stroke-width="1"/>'})+'<circle r="9.5" fill="#F3C84B"/><circle r="9.5" fill="none" stroke="#D9A82A" stroke-width="1.2"/>',
+    tulip:'<path d="M-19 -4 C-23 -26 -9 -34 0 -40 C9 -34 23 -26 19 -4 C15 10 -15 10 -19 -4Z" fill="#F29A6E"/><path d="M-19 -4 C-21 -20 -14 -28 -8 -33 C-12 -18 -10 -4 -3 8 C-12 8 -18 4 -19 -4Z" fill="#E8814F"/><path d="M0 -40 C-7 -26 -7 -8 0 8 C7 -8 7 -26 0 -40Z" fill="#F8BC98"/>',
+    rose:'<circle r="25" fill="#C93A66"/><circle cx="1" cy="1" r="19" fill="#DB5679"/><circle cx="-1" cy="-1" r="13" fill="#C93A66"/><circle r="8" fill="#E9688B"/><path d="M-12 2 a12 12 0 0 1 14 -12 M10 -3 a10 10 0 0 1 -8 11 M-5 -4 a6 6 0 0 1 8 2" fill="none" stroke="#A92B54" stroke-width="2" stroke-linecap="round"/>',
+    lavender:(function(){var s='<ellipse cx="0" cy="-35" rx="4" ry="6" fill="#9378D8"/>';for(var i=0;i<9;i++){var y=-28+i*7;s+='<ellipse cx="-6" cy="'+y+'" rx="5.5" ry="3.6" fill="#9E86DB" transform="rotate(-28 -6 '+y+')"/><ellipse cx="6" cy="'+y+'" rx="5.5" ry="3.6" fill="#8A6FD0" transform="rotate(28 6 '+y+')"/>'}return s})(),
+    sunflower:petals(16,function(){return '<ellipse cx="0" cy="-24" rx="6" ry="14" fill="#F2BE3C"/>'})+petals(16,function(){return '<ellipse cx="0" cy="-20" rx="5" ry="11" fill="#F8D45E" transform="rotate(11.25)"/>'})+'<circle r="14" fill="#6E4331"/><circle r="9" fill="#58352A"/><circle cx="-4" cy="-3" r="1.4" fill="#8A5A44"/><circle cx="4" cy="-2" r="1.4" fill="#8A5A44"/><circle cx="0" cy="4" r="1.4" fill="#8A5A44"/><circle cx="-5" cy="4" r="1.2" fill="#8A5A44"/><circle cx="5" cy="5" r="1.2" fill="#8A5A44"/>',
+    blossom:petals(5,function(){return '<circle cx="0" cy="-16" r="13" fill="#F7B2CB"/><path d="M0 -6 L0 -26" stroke="#E98FB0" stroke-width="1.4" stroke-linecap="round"/>'})+'<circle r="6" fill="#F3C84B"/>'
+  };
+  var TYPES=['daisy','tulip','rose','lavender','sunflower','blossom'];
+  var defs=$('#defs');
+  var dh='';
+  TYPES.forEach(function(t){dh+='<g id="f-'+t+'">'+flowers[t]+'</g>'});
+  dh+='<g id="f-cat"><path d="M-25 -8 L-22 -36 L-6 -23Z M25 -8 L22 -36 L6 -23Z" fill="#B9AFCB"/><circle cy="2" r="27" fill="#CFC6DE"/><ellipse cx="-9" cy="-2" rx="3.2" ry="4.4" fill="#2B2230"/><ellipse cx="9" cy="-2" rx="3.2" ry="4.4" fill="#2B2230"/><path d="M-3.5 7 h7 l-3.5 4z" fill="#E27BA0"/><path d="M0 11 q-4 5 -8 2 M0 11 q4 5 8 2" stroke="#2B2230" stroke-width="1.6" fill="none" stroke-linecap="round"/></g>';
+  defs.innerHTML=dh;
+
+  /* ---------- icons ---------- */
+  var ICONS={
+    home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+    letters:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3 7.5l9 6 9-6"/>',
+    bouquet:'<circle cx="12" cy="11" r="2.4"/><circle cx="12" cy="5.8" r="2.9"/><circle cx="17" cy="9.5" r="2.9"/><circle cx="15.2" cy="15.3" r="2.9"/><circle cx="8.8" cy="15.3" r="2.9"/><circle cx="7" cy="9.5" r="2.9"/><path d="M12 18v4"/>',
+    cat:'<path d="M4 4l4 3.4a8.4 8.4 0 0 1 8 0L20 4v9.5a8 8 0 0 1-16 0z"/><circle cx="9" cy="13" r=".7" fill="currentColor"/><circle cx="15" cy="13" r=".7" fill="currentColor"/><path d="M11 16h2"/>',
+    game:'<rect x="3.5" y="6" width="10.5" height="14" rx="2.5"/><path d="M10 4.5h8.5a2 2 0 0 1 2 2V16"/>',
+    heart:'<path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z"/>',
+    check:'<path d="M5 12.5l4.5 4.5L19 7"/>'
+  };
+  function icon(n,extra){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" '+(extra||'')+' aria-hidden="true">'+ICONS[n]+'</svg>'}
+
+  /* ---------- tabs ---------- */
+  var TABS=[['home','მთავარი'],['letters','წერილები'],['bouquet','თაიგული'],['cat','კატა'],['game','თამაში']];
+  var nav=$('#nav');
+  TABS.forEach(function(t){
+    var b=document.createElement('button');
+    b.type='button'; b.dataset.tab=t[0];
+    b.innerHTML=icon(t[0])+'<span>'+t[1]+'</span>';
+    b.addEventListener('click',function(){show(t[0])});
+    nav.appendChild(b);
+  });
+  function show(tab){
+    $$('.view').forEach(function(v){v.hidden=(v.id!=='v-'+tab)});
+    $$('.nav button').forEach(function(b){b.setAttribute('aria-current',b.dataset.tab===tab?'page':'false')});
+    window.scrollTo(0,0);
+    if(tab==='cat') catIdle();
+    if(tab==='game')gameEnter(); else gameLeave();
+  }
+
+  /* ---------- greeting + home tiles ---------- */
+  var h=new Date().getHours();
+  var greet=h>=5&&h<11?'დილა მშვიდობისა, ელენე':h>=11&&h<17?'გამარჯობა, ელენე':h>=17&&h<22?'საღამო მშვიდობისა, ელენე':'ღამე მშვიდობისა, ელენე';
+  $('#greet').textContent=greet;
+
+  var LETTERS=[
+    {t:'კატასავით თავდაჯერებულად',p:['ამ წუთას სადღაც ერთი კატა ისეთ ადგილას წევს, სადაც საერთოდ არ უნდა იწვეს: კალათაში, ყუთში ან ახლად დაუთოებულ მაისურზე. და ამაში სრულიად დარწმუნებულია, რომ მართალია.','დღეს ცოტა ასეთი თავდაჯერებულობა ელენესაც გამოადგება. გაიზმორე, გაიმართე და იარე ისე, თითქოს დღეს ყველაფერი შენი გადასაწყვეტია.']},
+    {t:'ყუთის კანონი',p:['ყველა კატამ იცის: თუ ყუთი არსებობს, ის კატისაა. ზომას მნიშვნელობა არ აქვს, ყუთი მაინც ჯდება.','დღეს იპოვე შენი ყუთი: რაღაც პატარა, რაც მხოლოდ შენ გიხარებს. ცხელი ჩაი, ერთი საყვარელი სიმღერა, რბილი წინდები. მთავარია, რომ შიგ ჩაძვრე და ცოტა ხანს იქ დარჩე.']},
+    {t:'ყვავილების ტაქტიკა',p:['ახალგაზრდა მზესუმზირები მთელი დღე მზეს მიჰყვებიან: დილით აღმოსავლეთისკენ იხრებიან, საღამოს დასავლეთისკენ. არ ფიქრობენ, ხვალ ღრუბელი იქნება თუ არა. უბრალოდ სინათლისკენ იხრებიან.','ამ ტაქტიკას ცუდი არაფერი აქვს. დღეს შენც მოძებნე ერთი მზიანი რამ და გადაიხარე მისკენ.']},
+    {t:'კატის იდეალური დღე',p:['07:00 გაიღვიძე და ხმამაღლა გამოაცხადე, რომ საუზმე დაგვიანდა.','09:00 ჩაიძინე იქ, სადაც მზე ეცემა.','12:00 უეცრად გაიქეცი მთელ სახლში. ახსნა არავის გმართებს.','15:00 კიდევ ჩაიძინე, ამჯერად უფრო ლამაზად.','19:00 მოითხოვე ვახშამი და დაუყოვნებლივ.','23:00 გახდი უმიზეზოდ ენერგიული.','ეს გეგმა ჯერ არავის გაუკრიტიკებია, რადგან ვერავინ გაბედა.']},
+    {t:'წვიმის შემდეგ',p:['ღრუბლიან დღეს ყვავილებიც ისვენებენ და წვიმას ელოდებიან. წვიმის შემდეგ კი ყველაფერი უფრო მწვანეა, ფოთლები ბრწყინავს და ჰაერი ახალი დღის სუნით ივსება.','თუ დღეს ცოტა ღრუბლიანია, ეს უბრალოდ წინასწარი მომზადებაა უფრო ლამაზი წუთისთვის.']},
+    {t:'30 წამიანი ამოცანა',p:['აირჩიე ერთი რამ და გააკეთე ახლავე: ჭიქა წყალი, ფანჯრის გაღება, სამი ნელი ამოსუნთქვა ან კატასავით გაზმორება.','პრიზი: ტაში, რომელსაც ეკრანიდან ვერ გაიგებ, მაგრამ ის მაინც ხდება.']},
+    {t:'ჭიქის ამბავი',p:['ფისო ჩამოაგდებს ჭიქას მაგიდიდან, შემდეგ ისე შეხედავს ყველას, თითქოს ეს ზუსტად ასე იყო დაგეგმილი.','ხანდახან ცხოვრებაც ასე გამოდის: რაღაც სხვანაირად დაიჭრება, მაგრამ თუ თავდაჯერებული სახით დგახარ, ყველა ფიქრობს, რომ ასე უნდა ყოფილიყო. ეს ხელოვნებაა.']},
+    {t:'ბაღი შენია',p:['ეს ბაღი პატარაა, მაგრამ აქ ყველაფერი ელენეს გასახარებლადაა: თაიგული, რომელსაც ფერები შეგიძლია შეუცვალო, ფისო, რომელიც არასდროს ნაწყენდება, და თამაში, სადაც ბევრჯერ შეიძლება წაიქცე და ახალი სირბილი დაიწყო.','დაბრუნდი, როცა გინდა, ერთხელაც და ათჯერაც.']}
+  ];
+  var readSet=store.get('read',[]);
+
+  var catState=store.get('cat',null)||{fed:70,fun:65,rest:80,t:Date.now(),name:'ფუსუნა',fur:'gray'};
+  function renderTiles(){
+    var unread=LETTERS.length-readSet.length;
+    var items=[
+      ['letters','rose','წერილები',unread>0?'ახალი წერილები: '+unread:'ყველა წერილი წაიკითხე'],
+      ['bouquet','butter','თაიგული','შენი ყვავილები'],
+      ['cat','sage',catState.name||'ფუსუნა','კატა გელოდება'],
+      ['game','lav','თამაში','ფისო ხტება დაბრკოლებებზე']
+    ];
+    var box=$('#tiles'); box.innerHTML='';
+    items.forEach(function(it){
+      var b=document.createElement('button'); b.type='button'; b.className='tile';
+      b.innerHTML='<span class="ic '+it[1]+'">'+icon(it[0])+'</span><b></b><small></small>';
+      $('b',b).textContent=it[2]; $('small',b).textContent=it[3];
+      b.addEventListener('click',function(){show(it[0])});
+      box.appendChild(b);
+    });
+  }
+
+  /* ---------- daily small things ---------- */
+  function today(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+  var DAILY=['დავლიე წყალი','გავაღე ფანჯარა და ჩავისუნთქე','ერთი წუთით გავიჭიმე ან გავისეირნე'];
+  var daily=store.get('daily',null);
+  if(!daily||daily.d!==today()){daily={d:today(),v:[false,false,false]};store.set('daily',daily)}
+  function renderDaily(){
+    var ul=$('#daily'); ul.innerHTML='';
+    DAILY.forEach(function(txt,i){
+      var li=document.createElement('li');
+      var b=document.createElement('button'); b.type='button'; b.className='check';
+      b.setAttribute('role','checkbox'); b.setAttribute('aria-checked',daily.v[i]?'true':'false');
+      b.innerHTML='<span class="box">'+icon('check','width="16" height="16" stroke-width="3"')+'</span><span></span>';
+      $('span:last-child',b).textContent=txt;
+      b.addEventListener('click',function(){daily.v[i]=!daily.v[i];store.set('daily',daily);renderDaily()});
+      li.appendChild(b); ul.appendChild(li);
+    });
+    var n=daily.v.filter(Boolean).length;
+    $('#dailyNote').textContent=n===3?'დღეს უკვე ბევრი გააკეთე. ახლა შეგიძლია დაისვენო.':n>0?'კარგია. ერთი პატარა რამეც ბევრია.':'თუ დღეს არც ერთს ვერ აკეთებ, ესეც რიგზეა. ხვალ ახალი დღეა.';
+  }
+
+  /* ---------- letters ---------- */
+  var cur=0, lastFocus=null;
+  function renderLetters(){
+    var ul=$('#letters'); ul.innerHTML='';
+    LETTERS.forEach(function(L,i){
+      var li=document.createElement('li');
+      var b=document.createElement('button'); b.type='button';
+      var isRead=readSet.indexOf(i)>-1;
+      b.className='lrow'+(isRead?' read':'');
+      b.innerHTML='<span class="seal">'+icon(isRead?'letters':'heart')+'</span><span class="t"></span>';
+      var t=$('.t',b); t.textContent=L.t;
+      var s=document.createElement('span'); s.className='s'; s.textContent=isRead?'წაკითხულია':'ახალი წერილი'; t.appendChild(s);
+      b.addEventListener('click',function(){openLetter(i,b)});
+      li.appendChild(b); ul.appendChild(li);
+    });
+  }
+  function openLetter(i,from){
+    cur=i; lastFocus=from||document.activeElement;
+    var L=LETTERS[i];
+    $('#sheetTitle').textContent=L.t;
+    var body=$('#sheetBody'); body.innerHTML='';
+    L.p.forEach(function(p){var e=document.createElement('p');e.textContent=p;body.appendChild(e)});
+    $('#prevL').disabled=i===0; $('#nextL').disabled=i===LETTERS.length-1;
+    $('#sheet').hidden=false; $('#panel').scrollTop=0;
+    $('#sheetClose').focus();
+    if(readSet.indexOf(i)<0){readSet.push(i);store.set('read',readSet);renderLetters();renderTiles()}
+  }
+  function closeLetter(){$('#sheet').hidden=true; if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
+  $('#sheetClose').addEventListener('click',closeLetter);
+  $('#sheet').addEventListener('click',function(e){if(e.target===this)closeLetter()});
+  $('#prevL').addEventListener('click',function(){if(cur>0)openLetter(cur-1,lastFocus)});
+  $('#nextL').addEventListener('click',function(){if(cur<LETTERS.length-1)openLetter(cur+1,lastFocus)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!$('#sheet').hidden)closeLetter()});
+
+  /* ---------- bouquet ---------- */
+  var SLOTS=[[180,70,1],[118,100,.95],[242,100,.95],[72,165,.9],[288,165,.9],[148,150,1],[212,150,1],[112,215,.9],[248,215,.9]];
+  var DEFAULT_B=['sunflower','tulip','blossom','lavender','daisy','rose','tulip','blossom','rose'];
+  var bq=store.get('bouquet',null);
+  if(!bq||bq.length!==SLOTS.length)bq=DEFAULT_B.slice();
+  var svg=$('#bouquet');
+  function buildBouquet(){
+    svg.innerHTML='';
+    el('path',{d:'M82 246 Q180 214 278 246 L198 402 Q180 410 162 402Z',fill:'var(--lav)',opacity:'.55'},svg);
+    SLOTS.forEach(function(s,i){
+      var x=s[0],y=s[1],sc=s[2];
+      var g=el('g',{'class':'sway',style:'animation-delay:'+(-i*0.55)+'s;animation-duration:'+(5+i%3*.8)+'s'},svg);
+      var cx=180+(x-180)*.35, cy=300+(y-300)*.6;
+      el('path',{d:'M180 304 Q'+cx+' '+cy+' '+x+' '+y,stroke:'var(--stem)','stroke-width':'4','stroke-linecap':'round',fill:'none'},g);
+      var t=.5,px=(1-t)*(1-t)*180+2*(1-t)*t*cx+t*t*x, py=(1-t)*(1-t)*304+2*(1-t)*t*cy+t*t*y;
+      var dir=x<180?-1:1;
+      el('ellipse',{cx:px+dir*9,cy:py,rx:'11',ry:'4.6',fill:'var(--stem)',transform:'rotate('+(dir*-35)+' '+(px+dir*9)+' '+py+')',opacity:'.95'},g);
+      var hd=el('g',{'class':'head',transform:'translate('+x+','+y+') scale('+sc+')','data-i':i,role:'button',tabindex:'0','aria-label':'ყვავილი '+(i+1)+', შეეხე შესაცვლელად'},g);
+      var inner=el('g',{},hd);
+      var u=el('use',{href:'#f-'+bq[i]},inner);
+      el('circle',{r:'34',fill:'transparent'},hd);
+      function change(){
+        var k=TYPES.indexOf(bq[i]);bq[i]=TYPES[(k+1)%TYPES.length];
+        u.setAttribute('href','#f-'+bq[i]); store.set('bouquet',bq);
+        inner.classList.remove('pop'); void inner.getBoundingClientRect(); inner.style.transformOrigin='0 0'; inner.classList.add('pop');
+      }
+      hd.addEventListener('click',change);
+      hd.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();change()}});
+    });
+    el('path',{d:'M82 246 L180 304 L278 246 L198 402 Q180 410 162 402Z',fill:'var(--lav-soft)',stroke:'var(--lav)','stroke-width':'2','stroke-linejoin':'round'},svg);
+    el('path',{d:'M180 304 L162 402 M180 304 L198 402',stroke:'var(--lav)','stroke-width':'1.5',opacity:'.5',fill:'none'},svg);
+    var tx=el('text',{x:'180',y:'372','text-anchor':'middle','font-size':'15','font-family':'Noto Serif Georgian, Georgia, serif','font-weight':'600',fill:'var(--ink)'},svg);
+    tx.textContent='ელენესთვის';
+    var rb=el('g',{},svg);
+    el('path',{d:'M180 306 C150 280 130 300 150 318 C160 326 176 316 180 306Z',fill:'var(--rose)'},rb);
+    el('path',{d:'M180 306 C210 280 230 300 210 318 C200 326 184 316 180 306Z',fill:'var(--rose)'},rb);
+    el('path',{d:'M180 308 L160 350 L172 346 L180 358 L186 340Z',fill:'var(--rose)',opacity:'.85'},rb);
+    el('path',{d:'M180 308 L204 348 L192 346 L184 356Z',fill:'var(--rose)',opacity:'.7'},rb);
+    el('circle',{cx:'180',cy:'308',r:'8',fill:'var(--rose)',stroke:'var(--lav-soft)','stroke-width':'2'},rb);
+  }
+  $('#shuffle').addEventListener('click',function(){
+    var last=bq.join();
+    do{bq=SLOTS.map(function(){return pick(TYPES)})}while(bq.join()===last);
+    store.set('bouquet',bq); buildBouquet();
+  });
+  $('#resetB').addEventListener('click',function(){bq=DEFAULT_B.slice();store.set('bouquet',bq);buildBouquet()});
+
+  /* ---------- cat ---------- */
+  var cat=$('#cat'), stage=$('#catStage'), bubble=$('#bubble'), card=$('#catCard');
+  var FURS={gray:['#B7B0C6','ნაცრისფერი'],ginger:['#F0AA6F','ჯანჯაფილისფერი'],white:['#F6F1F0','თეთრი'],black:['#4B4457','შავი']};
+  var sleeping=false, playing=false, happyTimer=null, playTimer=null;
+  // gentle decay while away; never below 35 so the cat never seems neglected
+  (function(){
+    var hrs=Math.max(0,(Date.now()-(catState.t||Date.now()))/3600000);
+    ['fed','fun','rest'].forEach(function(k){if(catState[k]>35)catState[k]=Math.max(35,catState[k]-hrs*5)});
+    catState.t=Date.now();
+  })();
+  function saveCat(){catState.t=Date.now();store.set('cat',catState)}
+  function clamp(v){return Math.max(0,Math.min(100,v))}
+  function setMeters(){
+    $('#m-fed').style.width=catState.fed+'%';
+    $('#m-fun').style.width=catState.fun+'%';
+    $('#m-rest').style.width=catState.rest+'%';
+  }
+  function say(t){bubble.textContent=t}
+  function applyFur(){
+    card.className='cat-card fur-'+catState.fur;
+    $$('.sw').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.fur===catState.fur?'true':'false')});
+  }
+  var sw=$('#swatches');
+  Object.keys(FURS).forEach(function(k){
+    var b=document.createElement('button'); b.type='button'; b.className='sw'; b.dataset.fur=k;
+    b.style.background=FURS[k][0]; b.setAttribute('aria-label',FURS[k][1]); b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',function(){catState.fur=k;saveCat();applyFur()});
+    sw.appendChild(b);
+  });
+  $('#catName').value=catState.name||'ფუსუნა';
+  $('#catName').addEventListener('input',function(){
+    catState.name=this.value.trim()||'ფუსუნა'; saveCat(); renderTiles();
+  });
+  function floatThing(kind){
+    var d=document.createElement('span');
+    d.className='float'+(kind==='z'?' z':'');
+    d.innerHTML=kind==='z'?'z':'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z"/></svg>';
+    d.style.left=(30+Math.random()*40)+'%'; d.style.top=(kind==='z'?'18%':'22%');
+    stage.appendChild(d); setTimeout(function(){d.remove()},1700);
+  }
+  function setHappy(ms){cat.classList.add('happy');clearTimeout(happyTimer);happyTimer=setTimeout(function(){cat.classList.remove('happy')},ms||1800)}
+  function wake(silent){
+    if(!sleeping)return;
+    sleeping=false; cat.classList.remove('sleeping'); $('#sleepLbl').textContent='დააძინე';
+    if(!silent)say(catState.rest>85?'გამარჯობა, კარგად დავისვენე':'ოდნავ მეძინება, მაგრამ შენთან ყოფნა მინდა');
+  }
+  function stopPlay(){playing=false;cat.classList.remove('playing');clearTimeout(playTimer)}
+  function catIdle(){
+    if(sleeping)return say('z z z');
+    var lowest=Math.min(catState.fed,catState.fun,catState.rest);
+    if(lowest<50){
+      if(catState.fed===lowest)return say('ცოტა მომშივდა, მაგრამ შენი ნახვა უკვე სიხარულია');
+      if(catState.fun===lowest)return say('მეთამაშება, თუ გინდა. თუ არა, მეყოფა, რომ აქ ხარ');
+      return say('ცოტა მეძინება, მაგრამ შენთან ყოფნა მინდა');
+    }
+    say(pick(['გამარჯობა, ელენე, მე აქ ვარ','ძალიან მიხარია, რომ მოხვედი','დღეს ისე მშვიდად ვარ','შეგიძლია უბრალოდ ჩემთან დაჯდე']));
+  }
+  cat.addEventListener('click',function(){
+    stopPlay(); wake(true);
+    catState.fun=clamp(catState.fun+8); saveCat(); setMeters();
+    setHappy(2200); floatThing('h'); setTimeout(function(){floatThing('h')},250);
+    say(pick(['მურრრრ','კიდევ, კიდევ','ძალიან თბილა შენთან','მურრ მურრ','მიყვარხარ']));
+  });
+  $('#aFeed').addEventListener('click',function(){
+    stopPlay(); wake(true);
+    catState.fed=clamp(catState.fed+25); saveCat(); setMeters();
+    cat.classList.remove('bounce'); void cat.getBoundingClientRect(); cat.classList.add('bounce');
+    setHappy(1800);
+    say(catState.fed>=100?'ძალიან მაძღარი ვარ და ბედნიერი':pick(['ნიამ ნიამ, გმადლობ','ძალიან გემრიელია','ეს ზუსტად ის იყო, რაც მინდოდა']));
+  });
+  $('#aPlay').addEventListener('click',function(){
+    wake(true);
+    if(playing){stopPlay();return catIdle()}
+    playing=true; cat.classList.add('playing');
+    catState.fun=clamp(catState.fun+25); catState.rest=clamp(catState.rest-5); saveCat(); setMeters();
+    say(pick(['დავიჭირე! თითქმის','გორგალი გარბის, გარბის!','კიდევ ერთხელ, გთხოვ']));
+    clearTimeout(playTimer); playTimer=setTimeout(function(){stopPlay();setHappy(1500);say('ვიმხიარულე. მადლობა, ელენე')},9000);
+  });
+  $('#aSleep').addEventListener('click',function(){
+    stopPlay();
+    if(sleeping){wake();return}
+    sleeping=true; cat.classList.add('sleeping'); cat.classList.remove('happy');
+    $('#sleepLbl').textContent='გააღვიძე'; say('ჩუმად... ვიძინებ');
+    floatThing('z');
+  });
+  setInterval(function(){
+    if(!sleeping)return;
+    catState.rest=clamp(catState.rest+1.5); setMeters(); saveCat();
+    if(Math.random()<.35)floatThing('z');
+  },1000);
+  applyFur(); setMeters();
+
+  /* ---------- runner game ---------- */
+  var gc=$('#gcanvas'), gx=gc.getContext('2d');
+  var GW=640, GH=360, GROUND=292, CATX=100;
+  var gs=null, raf=0, lastT=0, gActive=false, gBest=store.get('best',0), cols={}, lastShown='';
+  var FUR_RGB={gray:['#B7B0C6','#8C85A0'],ginger:['#F0AA6F','#C77B3C'],white:['#F6F1F0','#CFC2C0'],black:['#4B4457','#2A2433']};
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function readCols(){
+    var cs=getComputedStyle(document.documentElement);
+    function v(n){return cs.getPropertyValue(n).trim()}
+    cols={sky:v('--lav-soft'),hill:v('--rose-soft'),ground:v('--sage-soft'),line:v('--sage'),cloud:v('--surface'),ink:v('--ink'),rose:v('--rose'),stem:v('--stem'),butter:v('--butter')};
+  }
+  function gResize(){
+    var w=gc.clientWidth||320, dpr=window.devicePixelRatio||1;
+    gc.width=Math.round(w*dpr); gc.height=Math.round(w*dpr*GH/GW);
+    gx.setTransform(gc.width/GW,0,0,gc.width/GW,0,0);
+  }
+  window.addEventListener('resize',function(){if(gActive)gResize()});
+  function gNew(){
+    gs={state:'ready',t:0,dist:0,speed:230,y:0,vy:0,jumps:0,obs:[],hearts:[],next:420,score:0,hc:0,bg:0,newBest:false,overAt:0,
+        clouds:[{x:100,y:62,s:1},{x:360,y:40,s:.8},{x:560,y:88,s:1.1}]};
+    updateMsg(); showScore();
+  }
+  function showScore(){
+    var a='ქულა: '+gs.score, b='რეკორდი: '+gBest, k=a+b;
+    if(k===lastShown)return; lastShown=k;
+    $('#gScore').textContent=a; $('#gBest').textContent=b;
+  }
+  function updateMsg(){
+    var m=$('#gmsg');
+    if(gs.state==='run'){m.hidden=true;return}
+    m.hidden=false;
+    if(gs.state==='ready'){
+      $('#gmT').textContent='მზად ხარ, ფისო?';
+      $('#gmP').textContent='შეეხე ეკრანს, რომ გადახტეს. ჰაერში მეორედ შეხებაც შეიძლება.';
+    }else{
+      $('#gmT').textContent='არაუშავს, ისევ სცადე!';
+      $('#gmP').textContent='ქულა: '+gs.score+(gs.newBest?'. ახალი რეკორდი!':'')+'. შეეხე ეკრანს ახალი სირბილისთვის.';
+    }
+  }
+  function gJump(){
+    if(!gs)return;
+    if(gs.state==='over'){
+      if(performance.now()-gs.overAt<500)return;
+      gNew(); gs.state='run'; updateMsg(); return;
+    }
+    if(gs.state==='ready'){gs.state='run'; updateMsg()}
+    if(gs.y<=0){gs.vy=640; gs.jumps=1}
+    else if(gs.jumps<2){gs.vy=560; gs.jumps=2}
+  }
+  function gOver(){
+    gs.state='over'; gs.overAt=performance.now(); gs.vy=300;
+    if(gs.score>gBest){gBest=gs.score; gs.newBest=true; store.set('best',gBest)}
+    updateMsg(); showScore();
+  }
+  function spawn(){
+    var kinds=[{k:'pot',w:34,h:34},{k:'bush',w:50,h:30},{k:'fence',w:44,h:44},{k:'puddle',w:60,h:8}];
+    if(gs.dist>1500)kinds.push({k:'tall',w:34,h:58});
+    var d=kinds[Math.floor(Math.random()*kinds.length)];
+    var o={k:d.k,w:d.w,h:d.h,x:GW+40,v:Math.floor(Math.random()*3)};
+    gs.obs.push(o);
+    if(Math.random()<.6)gs.hearts.push({x:o.x+o.w/2,y:o.h+55});
+    else if(Math.random()<.3)gs.hearts.push({x:GW+40+rnd(60,140),y:rnd(55,95)});
+  }
+  function gUpdate(dt){
+    var s=gs; s.t+=dt;
+    s.clouds.forEach(function(c){c.x-=18*c.s*dt; if(c.x<-80)c.x=GW+60});
+    if(s.state!=='run'){
+      if(s.state==='over'){s.vy-=1500*dt; s.y=Math.max(0,s.y+s.vy*dt); if(s.y===0)s.vy=0}
+      return;
+    }
+    s.speed=Math.min(380,230+s.dist/40);
+    var dx=s.speed*dt; s.dist+=dx; s.bg+=dx;
+    s.vy-=1800*dt; s.y+=s.vy*dt;
+    if(s.y<=0){s.y=0; s.vy=0; s.jumps=0}
+    s.next-=dx; if(s.next<=0){spawn(); s.next=rnd(300,480)+s.speed*.35}
+    s.obs.forEach(function(o){o.x-=dx}); s.obs=s.obs.filter(function(o){return o.x+o.w>-30});
+    s.hearts.forEach(function(h){h.x-=dx}); s.hearts=s.hearts.filter(function(h){return h.x>-30});
+    var cb=GROUND-s.y-2, cl=CATX-14, cr=CATX+30, ct=cb-44;
+    for(var i=0;i<s.obs.length;i++){
+      var o=s.obs[i], ol=o.x+4, or=o.x+o.w-4, ot=GROUND-o.h+4;
+      if(cr>ol&&cl<or&&cb>ot){gOver();return}
+    }
+    s.hearts=s.hearts.filter(function(h){
+      var hy=GROUND-h.y, px=Math.max(cl,Math.min(h.x,cr)), py=Math.max(ct,Math.min(hy,cb));
+      if(Math.pow(h.x-px,2)+Math.pow(hy-py,2)<18*18){s.hc++;return false}
+      return true;
+    });
+    s.score=Math.floor(s.dist/25)+s.hc*5; showScore();
+  }
+  function drawHeart(x,y,r){
+    gx.fillStyle=cols.rose; gx.beginPath(); gx.moveTo(x,y+r*.9);
+    gx.bezierCurveTo(x-r*1.6,y-r*.2,x-r*.8,y-r*1.4,x,y-r*.5);
+    gx.bezierCurveTo(x+r*.8,y-r*1.4,x+r*1.6,y-r*.2,x,y+r*.9); gx.fill();
+  }
+  function drawPot(x,base,w,h,v){
+    var top=base-h;
+    gx.fillStyle='#D98B66'; gx.beginPath(); gx.moveTo(x+4,top+8); gx.lineTo(x+w-4,top+8); gx.lineTo(x+w-8,base); gx.lineTo(x+8,base); gx.closePath(); gx.fill();
+    gx.fillStyle='#C4724D'; gx.fillRect(x+1,top,w-2,9);
+    if(v>=0){
+      gx.strokeStyle=cols.stem; gx.lineWidth=3; gx.beginPath(); gx.moveTo(x+w/2,top); gx.lineTo(x+w/2,top-12); gx.stroke();
+      gx.fillStyle=['#F7B2CB','#F3C84B','#FFFFFF'][v%3]; gx.beginPath(); gx.arc(x+w/2,top-15,6.5,0,6.283); gx.fill();
+      gx.fillStyle=v%3===1?'#C93A66':'#F3C84B'; gx.beginPath(); gx.arc(x+w/2,top-15,2.6,0,6.283); gx.fill();
+    }
+  }
+  function drawObs(o){
+    var x=o.x;
+    if(o.k==='pot')drawPot(x,GROUND,o.w,o.h,o.v);
+    else if(o.k==='tall'){drawPot(x,GROUND,o.w,29,-1); drawPot(x,GROUND-29,o.w,29,o.v)}
+    else if(o.k==='bush'){
+      gx.fillStyle=cols.stem;
+      [[.25,.4,.45],[.5,.55,.55],[.78,.4,.45]].forEach(function(c){gx.beginPath(); gx.arc(x+o.w*c[0],GROUND-o.h*c[1],o.h*c[2]+4,0,6.283); gx.fill()});
+      gx.fillStyle='#F7B2CB';
+      [[.3,.6],[.58,.8],[.8,.55]].forEach(function(c){gx.beginPath(); gx.arc(x+o.w*c[0],GROUND-o.h*c[1],3,0,6.283); gx.fill()});
+    }else if(o.k==='fence'){
+      gx.fillStyle='#C9A27A';
+      for(var i=0;i<3;i++){var px=x+2+i*15; gx.beginPath(); gx.moveTo(px,GROUND); gx.lineTo(px,GROUND-o.h+6); gx.lineTo(px+5,GROUND-o.h); gx.lineTo(px+10,GROUND-o.h+6); gx.lineTo(px+10,GROUND); gx.closePath(); gx.fill()}
+      gx.fillStyle='#B58B61'; gx.fillRect(x,GROUND-o.h*.55,o.w,6);
+    }else if(o.k==='puddle'){
+      gx.fillStyle='#8EC5E8'; gx.beginPath(); gx.ellipse(x+o.w/2,GROUND+2,o.w/2,6,0,0,6.283); gx.fill();
+      gx.fillStyle='rgba(255,255,255,.55)'; gx.beginPath(); gx.ellipse(x+o.w/2-8,GROUND,10,2.2,0,0,6.283); gx.fill();
+    }
+  }
+  function leg(hx,hy,a,col){
+    gx.strokeStyle=col; gx.lineWidth=6.5; gx.beginPath(); gx.moveTo(hx,hy); gx.lineTo(hx+Math.sin(a)*22,hy+Math.cos(a)*22); gx.stroke();
+  }
+  function drawCat(x,fy,ph,air,dead,t){
+    var f=FUR_RGB[catState.fur]||FUR_RGB.gray, fur=f[0], line=f[1];
+    gx.save(); gx.lineCap='round'; gx.lineJoin='round';
+    if(dead){gx.translate(x,fy-24); gx.rotate(-.35); gx.translate(-x,-(fy-24))}
+    var sw=air?0:Math.sin(ph)*.85, sw2=air?0:Math.cos(ph)*.85;
+    // tail
+    gx.strokeStyle=fur; gx.lineWidth=7; gx.beginPath(); gx.moveTo(x-22,fy-32);
+    gx.bezierCurveTo(x-44,fy-30+Math.sin(t*7)*4,x-46,fy-58,x-34,fy-62+Math.sin(t*7+1)*3); gx.stroke();
+    // far legs
+    leg(x-12,fy-22,air?-1.05:-sw,line); leg(x+14,fy-22,air?1.0:sw2,line);
+    // body
+    gx.fillStyle=fur; gx.strokeStyle=line; gx.lineWidth=2;
+    gx.beginPath(); gx.ellipse(x,fy-32,26,15,0,0,6.283); gx.fill(); gx.stroke();
+    gx.lineWidth=3; gx.beginPath(); gx.moveTo(x-8,fy-45); gx.lineTo(x-6,fy-38); gx.moveTo(x+2,fy-46); gx.lineTo(x+3,fy-39); gx.stroke();
+    // near legs
+    leg(x-16,fy-22,air?-.85:sw,fur); leg(x+16,fy-22,air?.9:-sw2,fur);
+    // head
+    gx.fillStyle=fur; gx.strokeStyle=line; gx.lineWidth=2;
+    gx.beginPath(); gx.moveTo(x+14,fy-52); gx.lineTo(x+16,fy-71); gx.lineTo(x+27,fy-57); gx.closePath(); gx.fill(); gx.stroke();
+    gx.beginPath(); gx.moveTo(x+31,fy-57); gx.lineTo(x+37,fy-71); gx.lineTo(x+40,fy-51); gx.closePath(); gx.fill(); gx.stroke();
+    gx.beginPath(); gx.arc(x+26,fy-44,14,0,6.283); gx.fill(); gx.stroke();
+    gx.fillStyle='#2B2230';
+    if(dead){gx.lineWidth=2.2; gx.strokeStyle='#2B2230'; gx.beginPath(); gx.moveTo(x+28,fy-49); gx.lineTo(x+34,fy-43); gx.moveTo(x+34,fy-49); gx.lineTo(x+28,fy-43); gx.stroke()}
+    else{gx.beginPath(); gx.arc(x+31,fy-46,2.4,0,6.283); gx.fill()}
+    gx.fillStyle='#E27BA0'; gx.beginPath(); gx.moveTo(x+36,fy-43); gx.lineTo(x+41,fy-43); gx.lineTo(x+38.5,fy-40); gx.closePath(); gx.fill();
+    gx.strokeStyle=line; gx.lineWidth=1.4; gx.beginPath(); gx.moveTo(x+36,fy-41); gx.lineTo(x+46,fy-44); gx.moveTo(x+36,fy-39); gx.lineTo(x+46,fy-38); gx.stroke();
+    gx.restore();
+  }
+  function gDraw(){
+    var s=gs, c=gx;
+    c.clearRect(0,0,GW,GH);
+    c.fillStyle=cols.sky; c.fillRect(0,0,GW,GH);
+    c.fillStyle=cols.butter; c.beginPath(); c.arc(530,72,28,0,6.283); c.fill();
+    c.fillStyle=cols.cloud; c.globalAlpha=.85;
+    s.clouds.forEach(function(cl){
+      var r=14*cl.s; c.beginPath(); c.arc(cl.x,cl.y,r,0,6.283); c.arc(cl.x+r*1.2,cl.y-r*.4,r*1.2,0,6.283); c.arc(cl.x+r*2.5,cl.y,r,0,6.283); c.fill();
+    });
+    c.globalAlpha=1;
+    c.fillStyle=cols.hill; c.beginPath(); c.moveTo(0,GROUND);
+    var off=s.bg*.2;
+    for(var x=0;x<=GW;x+=16){c.lineTo(x,GROUND-46-Math.sin((x+off)/70)*20-Math.sin((x+off)/31)*6)}
+    c.lineTo(GW,GROUND); c.closePath(); c.fill();
+    c.fillStyle=cols.ground; c.fillRect(0,GROUND,GW,GH-GROUND);
+    c.fillStyle=cols.line; c.fillRect(0,GROUND,GW,3);
+    for(var k=0;k<9;k++){
+      var px=((k*80-s.bg)%720+720)%720-40, py=GROUND+18+(k%3)*13;
+      c.strokeStyle=cols.stem; c.lineWidth=2; c.beginPath(); c.moveTo(px,py+8); c.lineTo(px,py); c.stroke();
+      c.fillStyle=k%2?cols.rose:'#FFFFFF'; c.beginPath(); c.arc(px,py-2,3.6,0,6.283); c.fill();
+      c.fillStyle='#F3C84B'; c.beginPath(); c.arc(px,py-2,1.4,0,6.283); c.fill();
+    }
+    s.obs.forEach(drawObs);
+    s.hearts.forEach(function(h){drawHeart(h.x,GROUND-h.y+Math.sin(s.t*4+h.x/30)*3,10)});
+    var air=s.y>0, ph=s.dist/14, dead=s.state==='over';
+    drawCat(CATX,GROUND-s.y,s.state==='run'?ph:s.t*2,air||dead,dead,s.t);
+  }
+  function gLoop(ts){
+    if(!gActive)return;
+    var dt=Math.min(.033,(ts-lastT)/1000||0); lastT=ts;
+    gUpdate(dt); gDraw();
+    raf=requestAnimationFrame(gLoop);
+  }
+  function gameEnter(){
+    if(!gs)gNew();
+    readCols(); gResize(); updateMsg(); showScore();
+    gActive=true; lastT=performance.now(); cancelAnimationFrame(raf); raf=requestAnimationFrame(gLoop);
+  }
+  function gameLeave(){
+    gActive=false; cancelAnimationFrame(raf);
+    if(gs&&gs.state==='run')gNew();
+  }
+  gc.addEventListener('pointerdown',function(e){e.preventDefault();gJump()});
+  $('#gJumpBtn').addEventListener('pointerdown',function(e){e.preventDefault();gJump()});
+  document.addEventListener('keydown',function(e){
+    if(!gActive)return;
+    if(e.code==='Space'||e.code==='ArrowUp'||e.code==='KeyW'){e.preventDefault();gJump()}
+  });
+
+  /* ---------- music ---------- */
+  var song=$('#song'), playingMusic=false;
+  function syncMusic(){
+    var b=$('#musicBtn'); b.setAttribute('aria-pressed',playingMusic?'true':'false');
+    b.setAttribute('aria-label',playingMusic?'მუსიკის გამორთვა':'მუსიკის ჩართვა');
+    $('#musicLbl').textContent=playingMusic?'მუსიკა ჩართულია':'მუსიკა';
+  }
+  function failMusic(){
+    playingMusic=false; $('#musicBtn').setAttribute('aria-pressed','false');
+    $('#musicLbl').textContent='ვერ ჩაირთო, სცადე ისევ';
+  }
+  $('#musicBtn').addEventListener('click',function(){
+    if(playingMusic){song.pause(); playingMusic=false; syncMusic(); return}
+    var p=null;
+    try{p=song.play()}catch(e){p=null}
+    if(p&&p.then)p.then(function(){playingMusic=true;syncMusic()}).catch(failMusic);
+    else{playingMusic=true;syncMusic()}
+  });
+
+  /* ---------- boot ---------- */
+  renderTiles(); renderDaily(); renderLetters(); buildBouquet(); show('home');
+})();
+</script>
+
+</body>
+</html>
